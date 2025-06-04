@@ -1,0 +1,15 @@
+# Ignore Terraform state files
+*.tfstate
+*.tfstate.backup
+
+# Ignore Terraform variable overrides
+*.tfvars
+
+# Ignore .terraform/ directories (where modules/providers are downloaded)
+.terraform/
+
+# Ignore lock file (optional, keep if you're collaborating)
+.terraform.lock.hcl
+
+# Ignore macOS system files
+.DS_Store

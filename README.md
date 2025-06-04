@@ -1,0 +1,1 @@
+TO CREATE EC2 and S3 bucket using Terraform
