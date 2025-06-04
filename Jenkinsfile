@@ -5,13 +5,14 @@ pipeline {
         stage('Init Terraform') {
             steps {
                 dir('TF-EC2') {
-                    sh 'terraform init'
+                    sh 'terraform init -input=false'
                 }
                 dir('TF-S3') {
-                    sh 'terraform init'
+                    sh 'terraform init -input=false'
                 }
             }
         }
+
         stage('Validate Terraform') {
             steps {
                 dir('TF-EC2') {
@@ -22,6 +23,16 @@ pipeline {
                 }
             }
         }
+
+        stage('Terraform Plan') {
+            steps {
+                dir('TF-EC2') {
+                    sh 'terraform plan'
+                }
+                dir('TF-S3') {
+                    sh 'terraform plan'
+                }
+            }
+        }
     }
 }
-
