@@ -2,9 +2,6 @@
 *.tfstate
 *.tfstate.backup
 
-# Ignore Terraform variable overrides
-*.tfvars
-
 # Ignore .terraform/ directories (where modules/providers are downloaded)
 .terraform/
 
