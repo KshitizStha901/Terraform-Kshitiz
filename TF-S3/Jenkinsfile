@@ -1,0 +1,41 @@
+pipeline{
+    agent any
+    environment {
+        AWS_ACCESS_KEY = credentials('aws_access_key')
+        AWS_SECRET_KEY = credentials('aws_secret_key')
+    }
+    stages{
+        stage('Clone Repo'){
+            steps {
+                git 'https://github.com/KshitizStha901/Terraform-Kshitiz.git'
+            }
+        }
+        stage('Terraform init')
+        {
+            steps{
+            dir ('TF-S3'){
+            sh 'terraform init'
+            echo 'Initializing Terraform..........'
+            }
+            }
+        }
+        stage('Terraform Plan')
+        {
+            steps{
+            dir('TF-S3'){
+            sh 'terraform plan'
+            echo 'Planning Terraform............'
+            }
+            }
+        }
+        stage (' Terraform Apply')
+        {
+            steps{
+            dir('TF-S3'){
+            sh 'terraform apply -auto-approve'
+            echo 'Applying changes............'
+            }
+            }
+        }
+    }
+}
