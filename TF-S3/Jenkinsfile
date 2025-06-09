@@ -7,7 +7,7 @@ pipeline{
     stages{
         stage('Clone Repo'){
             steps {
-                git branch 'dev', url: 'https://github.com/KshitizStha901/Terraform-Kshitiz.git'
+                git branch 'main', url: 'https://github.com/KshitizStha901/Terraform-Kshitiz.git'
             }
         }
         stage('Terraform init')
