@@ -17,8 +17,10 @@ pipeline{
         {
             steps{
             dir ('TF-S3'){
-            sh 'terraform init'
-            echo 'Initializing Terraform..........'
+                script{
+                    sh 'terraform init'
+                    echo 'Initializing Terraform..........'
+                }
             }
             }
         }
@@ -26,8 +28,10 @@ pipeline{
         {
             steps{
             dir('TF-S3'){
-            sh 'terraform plan'
-            echo 'Planning Terraform............'
+                script{
+                    sh 'terraform plan'
+                    echo 'Planning Terraform............'
+                }
             }
             }
         }
@@ -35,8 +39,10 @@ pipeline{
         {
             steps{
             dir('TF-S3'){
-            sh 'terraform apply -auto-approve'
-            echo 'Applying changes............'
+                script{
+                    sh 'terraform apply -auto-approve'
+                     echo 'Applying changes............'
+                }
             }
             }
         }
