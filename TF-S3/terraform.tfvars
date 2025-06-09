@@ -1,2 +1,2 @@
-s3_bucket_name = "Kshitiz-unique-bucket-2025-tf"
+s3_bucket_name = "Kshitiz_unique_bucket_2025_tf"
 aws_region = "us-east-1"
