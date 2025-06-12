@@ -46,6 +46,16 @@ pipeline{
                 dir('TF-EC2'){
                     script{
                         sh 'terraform apply -auto-approve'
+                        sh 'sleep 60'
+                    }
+                }
+            }
+        }
+        stage('Terraform destroy'){
+            steps{
+                dir('TF-EC2'){
+                    script{
+                        sh 'terraform destroy -auto-approve'
                     }
                 }
             }
