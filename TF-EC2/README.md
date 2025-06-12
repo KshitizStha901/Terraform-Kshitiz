@@ -1,90 +1,67 @@
-# Terraform EC2 Deployment Module
+# Terraform EC2 Deployment with Jenkins Automation
 
 ## Overview
 
-This Terraform configuration deploys an Amazon EC2 instance using an AWS Launch Template and manages it through an Auto Scaling Group (ASG).  
-The EC2 instance runs a user data script on startup to install and start an Apache HTTP server, serving a simple welcome webpage.
+This project uses Terraform to provision an EC2 instance on AWS.  
+The entire infrastructure deployment is automated using a Jenkins pipeline.
 
 ---
 
-## Files Description
+## Folder Structure
 
-- **main.tf**  
-  Defines the AWS provider, the EC2 launch template (with user data), and the Auto Scaling Group.
-
-- **variables.tf**  
-  Declares input variables such as AWS region, AMI ID, instance type, key name, and security group IDs.
-
-- **terraform.tfvars**  
-  Provides concrete values for the declared variables.
-
-- **output.tf**  
-  Outputs useful information after deployment like instance ID and public IP address.
+- `main.tf` – Provisions the EC2 instance or autoscaling setup.
+- `variables.tf` – Contains input variables (region, AMI, instance type, etc.).
+- `terraform.tfvars` – Actual values for the variables.
+- `Jenkinsfile` – Automates the Terraform process using Jenkins.
 
 ---
 
-## Resources Created
+## Features
 
-- **AWS Launch Template**  
-  Configures the EC2 instance properties and user data script.
-
-- **Auto Scaling Group (ASG)**  
-  Ensures the desired number of EC2 instances is running using the launch template.
-
----
-
-## User Data Script
-
-The instance runs a startup script that:
-- Updates the system packages
-- Installs Apache HTTP server (`httpd`)
-- Starts the Apache service and enables it to start on boot
-- Creates a simple HTML file to serve as the homepage
+* Deploys an EC2 instance or autoscaling group (ASG)  
+* Includes User Data to configure a basic web server  
+* Fully automated via Jenkins pipeline  
+* Cleans up (optional: destroy after deployment)
 
 ---
 
-## Prerequisites
+## Jenkins Pipeline Explanation
 
-- AWS CLI configured with appropriate credentials and permissions.
-- An existing key pair in AWS matching the `key_name` variable.
-- Security Group ID allowing HTTP (port 80) and SSH (port 22) access.
+This project uses a **declarative Jenkins pipeline** (`Jenkinsfile`) with the following stages:
 
----
+1. **Clone Repo**  
+   Clones your Terraform project from GitHub.
 
-## How to Use
+2. **Terraform Init**  
+   Initializes the Terraform working directory (`TF-EC2`).
 
-1. Initialize Terraform
-    ```bash
-    terraform init
-    ```
+3. **Terraform Validate**  
+   Checks the validity of Terraform configuration.
 
-2. Validate the configuration
-    ```bash
-    terraform validate
-    ```
+4. **Terraform Plan**  
+   Shows the execution plan before applying.
 
-3. Review the execution plan
-    ```bash
-    terraform plan
-    ```
+5. **Terraform Apply**  
+   Provisions EC2 or ASG with user data automatically.
 
-4. Apply the configuration to create resources
-    ```bash
-    terraform apply -auto-approve
-    ```
+### Jenkins Environment Setup
 
-5. After testing, destroy the resources to avoid charges
-    ```bash
-    terraform destroy -auto-approve
-    ```
+- Jenkins must be configured with AWS credentials using the credentials manager:
+  - `aws_access_key_id`
+  - `aws_secret_key`
+- Jenkins node should have:
+  - Terraform installed
+  - Access to `/opt/homebrew/bin` (adjust `PATH` as needed)
 
 ---
 
-## Notes
+## Manual Terraform Commands (Optional)
 
-- The user data script is base64 encoded as required by AWS launch templates.
-- Modify variables in `terraform.tfvars` to match your environment.
-- This module deploys in the AWS region specified by the `aws_region` variable.
+If you want to run it manually:
 
----
-
+```bash
+cd TF-EC2
+terraform init
+terraform validate
+terraform plan
+terraform apply -auto-approve
