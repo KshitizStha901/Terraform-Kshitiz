@@ -1,0 +1,54 @@
+pipeline{
+    agent any
+    environment{
+        AWS_ACCESS_KEY_ID = credentials('aws_access_key_id')
+        AWS_SECRET_ACCESS_KEY = credentials('aws_secret_key')
+        PATH = "/opt/homebrew/bin:$PATH"
+    }
+    stages{
+        stage('Clone Repo'){
+            steps{
+                    git(
+                        branch:'main',
+                        url: 'https://github.com/KshitizStha901/Terraform-Kshitiz.git'
+                    )
+                }
+            }
+        stage('Terraform Init'){
+            steps{
+                dir('TF-EC2'){
+                    script{
+                        sh 'terraform init'
+                    }
+                }
+            }
+        }
+        stage('Terraform Validate'){
+            steps{
+                dir ('TF-EC2'){
+                    script{
+                        sh 'terraform validate'
+                    }
+                }
+            }
+        }
+        stage('Terraform plan'){
+            steps{
+                dir ('TF-EC2'){
+                    script{
+                        sh 'terraform plan'
+                    }
+                }
+            }
+        }
+        stage('Terraform Apply'){
+            steps{
+                dir('TF-EC2'){
+                    script{
+                        sh 'terraform apply -auto-approve'
+                    }
+                }
+            }
+        }
+    }
+}
