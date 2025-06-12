@@ -9,15 +9,15 @@ resource "aws_launch_template" "kshitiz_lt" {
   key_name = var.key_name
   vpc_security_group_ids = [var.security_group_ids]
 
-  user_data = <<EOF
-#!/bin/bash
-yum update -y
-yum install httpd -y
-service httpd start
-chkconfig httpd on
-cd /var/www/html
-echo "<html><h1>Welcome To My Webpage</h1></html>" > index.html
-EOF
+  user_data = base64encode(<<EOF
+    #!/bin/bash
+    yum update -y
+    yum install httpd -y
+    service httpd start
+    chkconfig httpd on
+    cd /var/www/html
+    echo "<html><h1>Welcome To My Webpage</h1></html>" > index.html
+  EOF)
 
   tag_specifications {
     resource_type = "instance"
