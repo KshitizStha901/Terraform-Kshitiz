@@ -44,6 +44,9 @@ This project uses a **declarative Jenkins pipeline** (`Jenkinsfile`) with the fo
 5. **Terraform Apply**  
    Provisions EC2 or ASG with user data automatically.
 
+6. **Terraform Destroy**  
+   Remove the resources created.
+
 ### Jenkins Environment Setup
 
 - Jenkins must be configured with AWS credentials using the credentials manager:
