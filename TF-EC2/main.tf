@@ -1,13 +1,23 @@
 provider "aws" {
   region = var.aws_region
 }
+data "aws_security_group" "default_vpc_sg" {
+  filter {
+    name = "group-name"
+    values = ["default"]
+  }
 
+  filter{
+    name = "vpc-id"
+    values = [aws_vpc.main.id]
+  }
+}
 resource "aws_launch_template" "kshitiz_lt" {
   name = "kshitiz-template"
   image_id = var.ami_id
   instance_type = var.instance_type
   key_name = var.key_name
-  vpc_security_group_ids = [var.security_group_ids]
+  vpc_security_group_ids = [data.aws_security_group.default_vpc_sg.id]
 
   user_data = base64encode(<<EOF
     #!/bin/bash
@@ -30,10 +40,11 @@ resource "aws_launch_template" "kshitiz_lt" {
 }
 
 resource "aws_autoscaling_group" "kshitiz_asg" {
-  availability_zones = ["us-east-1a"]
   desired_capacity   = 1
   max_size           = 1
   min_size           = 1
+
+  vpc_zone_identifier = aws_subnet.public_subnets[*].id 
 
   launch_template {
     id      = aws_launch_template.kshitiz_lt.id

@@ -14,7 +14,3 @@ variable "key_name" {
     description = " Name of the existing EC2 Key Pair"
     type = string
 }
-variable "security_group_ids" {
-    description = "security group for EC2 "
-    type = string
-}
